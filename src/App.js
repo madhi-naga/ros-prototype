@@ -8,14 +8,14 @@ import Cart from './pages/Cart';
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route exact path='/' element={<Home/>} />
-        <Route path='/Menu' element={<Menu/>} />
-        <Route path='/Cart' element={<Cart/>} />
-        <Route path='/Feedback' element={<Feedback/>} />
-      </Routes>
-    </Router>
+      <Router>
+        <Routes>
+          <Route exact path='/' element={<Home/>} />
+          <Route path='/Menu' element={<Menu/>} />
+          <Route path='/Cart' element={<Cart/>} />
+          <Route path='/Feedback' element={<Feedback/>} />
+        </Routes>
+      </Router>
   );
 }
 
