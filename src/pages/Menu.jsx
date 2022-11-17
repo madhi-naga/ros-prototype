@@ -1,11 +1,15 @@
-import { useState, useEffect } from "react";
-import { AppBar, Typography, IconButton, Box, Toolbar, Grid } from "@mui/material";
+import { useState } from "react";
+import { AppBar, Typography, IconButton, Box, Toolbar, Grid, TextField } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import SearchBar from "@mkyy/mui-search-bar";
+import Snackbar from "@mui/material/Snackbar";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Rating from "@mui/material/Rating";
 import AddIcon from "@mui/icons-material/Add";
-import DeleteIcon from "@mui/icons-material/Delete";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import SearchIcon from "@mui/icons-material/Search";
@@ -22,7 +26,7 @@ import starters from "../data/starters.json";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
-import "./cart.css";
+import "./menu.css";
 
 const formatter = new Intl.NumberFormat("en-US", {
 	style: "currency",
@@ -33,8 +37,33 @@ const formatter = new Intl.NumberFormat("en-US", {
 	//maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
 });
 
-const Menu = () => {
-	const [hideSidebar, setHideSideBar] = useState(true);
+const Menu = ({ cartItems, setCartItems }) => {
+	const navigate = useNavigate();
+	const [showToast, setShowToast] = useState(false);
+	const handleClick = () => {
+		setShowToast(true);
+	};
+	const handleClose = (event, reason) => {
+		if (reason === "clickaway") {
+			return;
+		}
+		setShowToast(false);
+	};
+
+	const numCartItems = Object.entries(cartItems).reduce((previousValue, currentValue) => {
+		return previousValue + currentValue[1].quantity;
+	}, 0);
+
+	const addItems = (item) => {
+		const newItems = { ...cartItems };
+		if (item.name in newItems) {
+			newItems[item.name].quantity++;
+		} else {
+			newItems[item.name] = { quantity: 1, price: item.price, img: item.img };
+		}
+		handleClick();
+		setCartItems(newItems);
+	};
 	const [currentSubMenu, setCurrentSubMenu] = useState("Specials");
 	const menuItems = () => {
 		var items = specials;
@@ -65,23 +94,35 @@ const Menu = () => {
 		}
 		return items;
 	};
-	console.log(menuItems());
 	const subMenus = ["Specials", "Starters", "Appetizers", "Mains", "Chef's Picks", "Desserts", "Drinks"];
+
+	const [textFieldValue, setTextFieldValue] = useState("");
+	const handleSearch = (labelOptionValue) => {
+		//...
+		console.log(labelOptionValue);
+	};
+	const selectedItems = menuItems().filter((item) => {
+		const lowerCaseName = textFieldValue.toLowerCase();
+		return item.name.toLowerCase().includes(lowerCaseName) || item.dsc.toLowerCase().includes(textFieldValue);
+	});
+
+	const handleChangeMenu = (menu) => {
+		setTextFieldValue("");
+		setCurrentSubMenu(menu);
+	};
+
 	return (
 		<div>
 			<Box sx={{ flexGrow: 1 }}>
 				<AppBar position="static">
 					<Toolbar>
-						<IconButton
-							size="large"
-							edge="start"
-							color="inherit"
-							aria-label="menu"
-							sx={{ mr: 2 }}
-							onClick={() => setHideSideBar(!hideSidebar)}
-						>
-							<SearchIcon />
-						</IconButton>
+						<SearchBar
+							className="searchbar"
+							value={textFieldValue}
+							onChange={(newValue) => setTextFieldValue(newValue)}
+							onSearch={handleSearch}
+							onCancelResearch={() => setTextFieldValue("")}
+						/>
 						<Typography
 							variant="h4"
 							component="div"
@@ -94,8 +135,35 @@ const Menu = () => {
 						>
 							Menu
 						</Typography>
-						<IconButton size="large" edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
+						<IconButton
+							size="large"
+							edge="start"
+							color="inherit"
+							aria-label="menu"
+							sx={{ mr: 2 }}
+							onClick={() => {
+								navigate("/Cart");
+							}}
+						>
 							<ShoppingCartIcon />
+							{numCartItems > 0 && (
+								<Typography
+									component="span"
+									sx={{
+										flexGrow: 1,
+										textAlign: "center",
+										fontWeight: 150,
+										top: "-10px",
+										position: "inherit",
+										border: "1px solid #ffffff",
+										width: 26,
+										height: 24,
+										borderRadius: 50,
+									}}
+								>
+									{numCartItems}
+								</Typography>
+							)}
 						</IconButton>
 					</Toolbar>
 				</AppBar>
@@ -106,16 +174,10 @@ const Menu = () => {
 						{subMenus.map((menu) => {
 							return (
 								<>
-									<ListItemButton
-										key={menu}
-										onClick={() => {
-											setCurrentSubMenu(menu);
-										}}
-										selected={menu === currentSubMenu}
-									>
+									<ListItemButton key={menu} onClick={() => handleChangeMenu(menu)} selected={menu === currentSubMenu}>
 										<ListItemText primary={menu} />
 									</ListItemButton>
-									<Divider sx={{ "border-color": "#1976d2" }} />
+									<Divider sx={{ borderColor: "#1976d2" }} />
 								</>
 							);
 						})}
@@ -123,34 +185,32 @@ const Menu = () => {
 				</Grid>
 				<Grid item xs={12} sm={12} md={10} lg={9}>
 					<List disablePadding sx={{ width: "100%" }}>
-						{menuItems().map((item) => {
+						{selectedItems.map((item) => {
 							return (
 								<>
-									<ListItem
-										alignItems="start"
-										key={item.name}
-										secondaryAction={
-											<IconButton edge="end" aria-label="delete" sx={{ marginRight: "32px" }}>
-												<AddIcon fontSize="large" />
-											</IconButton>
-										}
-									>
+									<ListItem alignItems="flex-center" key={item.name}>
 										<ListItemText primary={item.name} secondary={item.dsc} sx={{ "max-width": "45%" }} />
 										<ListItemText
 											primary={formatter.format(item.price)}
-											secondary={<Rating name="simple-controlled" value={item.rate} />}
+											secondary={<Rating name="simple-controlled" value={item.rate} readOnly />}
 											sx={{ "max-width": "15%" }}
 										/>
-
 										<ListItemAvatar>
 											<Avatar
 												alt="N A"
 												src={item.img}
-												sx={{ width: 320, height: 150, borderRadius: "25%", marginRight: "32px" }}
+												sx={{ width: 320, height: 150, borderRadius: "5px", marginRight: "32px" }}
 											/>
 										</ListItemAvatar>
+										<IconButton
+											edge="end"
+											aria-label="delete"
+											sx={{ marginRight: "32px" }}
+											onClick={() => addItems(item)}
+										>
+											<AddIcon fontSize="large" />
+										</IconButton>
 									</ListItem>
-
 									<Divider sx={{ "border-color": "#1976d2" }} />
 								</>
 							);
@@ -158,6 +218,18 @@ const Menu = () => {
 					</List>
 				</Grid>{" "}
 			</Grid>
+			<Snackbar
+				open={showToast}
+				autoHideDuration={1000}
+				onClose={handleClose}
+				message="Item Added Successfully"
+				anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+				sx={{ width: 400 }}
+			>
+				<Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+					Item Successfully Added
+				</Alert>
+			</Snackbar>
 		</div>
 	);
 };
