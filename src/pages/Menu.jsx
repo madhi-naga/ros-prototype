@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { AppBar, Typography, IconButton, Box, Toolbar, Grid, TextField } from "@mui/material";
+import { AppBar, Typography, IconButton, Box, Toolbar, Grid } from "@mui/material";
+import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "@mkyy/mui-search-bar";
 import Snackbar from "@mui/material/Snackbar";
@@ -9,10 +10,8 @@ import AddIcon from "@mui/icons-material/Add";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Alert from "@mui/material/Alert";
-import AlertTitle from "@mui/material/AlertTitle";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
-import SearchIcon from "@mui/icons-material/Search";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import { ListItemButton } from "@mui/material";
@@ -56,10 +55,10 @@ const Menu = ({ cartItems, setCartItems }) => {
 
 	const addItems = (item) => {
 		const newItems = { ...cartItems };
-		if (item.name in newItems) {
-			newItems[item.name].quantity++;
+		if (item.dsc in newItems) {
+			newItems[item.dsc].quantity++;
 		} else {
-			newItems[item.name] = { quantity: 1, price: item.price, img: item.img };
+			newItems[item.dsc] = { quantity: 1, price: item.price, img: item.img };
 		}
 		handleClick();
 		setCartItems(newItems);
@@ -99,7 +98,6 @@ const Menu = ({ cartItems, setCartItems }) => {
 	const [textFieldValue, setTextFieldValue] = useState("");
 	const handleSearch = (labelOptionValue) => {
 		//...
-		console.log(labelOptionValue);
 	};
 	const selectedItems = menuItems().filter((item) => {
 		const lowerCaseName = textFieldValue.toLowerCase();
@@ -185,11 +183,67 @@ const Menu = ({ cartItems, setCartItems }) => {
 				</Grid>
 				<Grid item xs={12} sm={12} md={10} lg={9}>
 					<List disablePadding sx={{ width: "100%" }}>
-						{selectedItems.map((item) => {
+						{selectedItems.map((item, index) => {
+							if (item.img2 && item.img3) {
+								return (
+									<>
+										<ListItem alignItems="flex-center" key={item.name} sx={{ display: "block" }}>
+											<div style={{ width: "100%", display: "flex" }}>
+												<ListItemText
+													primary={item.dsc}
+													secondary={item.name}
+													sx={{ maxWidth: "30%", fontSize: "3rem" }}
+												/>
+												<ListItemText
+													primary={formatter.format(item.price)}
+													secondary={<Rating name="simple-controlled" value={item.rate} readOnly />}
+													sx={{ "max-width": "15%" }}
+												/>
+											</div>
+											<Grid container spacing={2}>
+												<Grid item xs={index % 2 === 0 ? 6 : 4}>
+													<ListItemAvatar sx={{ height: "100%" }}>
+														<Avatar
+															alt="N A"
+															src={item.img}
+															sx={{ width: "100%", height: "320px", borderRadius: "5px" }}
+														/>
+													</ListItemAvatar>
+												</Grid>
+												<Grid item xs={index % 2 === 0 ? 4 : 6}>
+													<ListItemAvatar sx={{ height: "100%" }}>
+														<Avatar
+															alt="N A"
+															src={item.img2}
+															sx={{ width: "100%", height: "154px", borderRadius: "5px", marginBottom: "12px" }}
+														/>
+														<Avatar
+															alt="N A"
+															src={item.img3}
+															sx={{ width: "100%", height: "154px", borderRadius: "5px" }}
+														/>
+													</ListItemAvatar>
+												</Grid>
+												<Grid item xs={2} sx={{ display: "flex" }}>
+													<IconButton
+														edge="end"
+														aria-label="delete"
+														sx={{ margin: "auto" }}
+														onClick={() => addItems(item)}
+													>
+														<AddIcon fontSize="large" />
+													</IconButton>
+												</Grid>
+											</Grid>
+										</ListItem>
+										<Divider sx={{ "border-color": "#1976d2" }} />
+									</>
+								);
+							}
 							return (
 								<>
 									<ListItem alignItems="flex-center" key={item.name}>
-										<ListItemText primary={item.name} secondary={item.dsc} sx={{ "max-width": "45%" }} />
+										<ListItemText primary={item.dsc} secondary={item.name} sx={{ "max-width": "45%" }} />
 										<ListItemText
 											primary={formatter.format(item.price)}
 											secondary={<Rating name="simple-controlled" value={item.rate} readOnly />}

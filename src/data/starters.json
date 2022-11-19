@@ -1,14 +1,5 @@
 [
 	{
-		"id": "artisanal-bread-choose-your-own-3-pack",
-		"img": "https://goldbelly.imgix.net/uploads/showcase_media_asset/image/132332/artisanal-bread-choose-your-own-3-pack.c64d8dc0584457116b91a24f43cd861c.jpg?ixlib=react-9.0.2&auto=format&ar=1%3A1",
-		"name": "Orwashers Bakery",
-		"dsc": "Artisanal Bread - Choose Your Own 3 Pack",
-		"price": 45,
-		"rate": 5,
-		"country": "New York, NY"
-	},
-	{
 		"id": "artisanal-bread-choose-your-own-4-pack",
 		"img": "https://goldbelly.imgix.net/uploads/showcase_media_asset/image/132426/bread-choose-your-own-4-pack.78f96938f1a3a5bc6a7fefa564bf878c.jpg?ixlib=react-9.0.2&auto=format&ar=1%3A1",
 		"name": "Grateful Bread Company",
