@@ -23,7 +23,7 @@ const Feedback = () => {
 
     return (
         <main>
-            <header className="header">
+            <header className="header3">
                 <h3>Food Feedback: </h3>
                 <br></br>
                 <h5> &nbsp; Rate our Food to help us do better! </h5>
