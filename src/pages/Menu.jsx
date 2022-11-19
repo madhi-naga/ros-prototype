@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { AppBar, Typography, IconButton, Box, Toolbar, Grid } from "@mui/material";
+import Carousel from "react-material-ui-carousel";
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "@mkyy/mui-search-bar";
@@ -184,7 +185,7 @@ const Menu = ({ cartItems, setCartItems }) => {
 				<Grid item xs={12} sm={12} md={10} lg={9}>
 					<List disablePadding sx={{ width: "100%" }}>
 						{selectedItems.map((item, index) => {
-							if (item.img2 && item.img3) {
+							if (item.img2 && item.img3 && index < 2) {
 								return (
 									<>
 										<ListItem alignItems="flex-center" key={item.name} sx={{ display: "block" }}>
@@ -249,13 +250,30 @@ const Menu = ({ cartItems, setCartItems }) => {
 											secondary={<Rating name="simple-controlled" value={item.rate} readOnly />}
 											sx={{ "max-width": "15%" }}
 										/>
-										<ListItemAvatar>
-											<Avatar
-												alt="N A"
-												src={item.img}
-												sx={{ width: 320, height: 150, borderRadius: "5px", marginRight: "32px" }}
-											/>
-										</ListItemAvatar>
+										<Carousel sx={{ width: 320, height: 150 }} autoPlay={false}>
+											<ListItemAvatar>
+												<Avatar
+													alt="N A"
+													src={item.img}
+													sx={{ width: 320, height: 150, borderRadius: "5px", marginRight: "32px" }}
+												/>
+											</ListItemAvatar>
+											<ListItemAvatar>
+												<Avatar
+													alt="N A"
+													src={item.img2}
+													sx={{ width: 320, height: 150, borderRadius: "5px", marginRight: "32px" }}
+												/>
+											</ListItemAvatar>
+											<ListItemAvatar>
+												<Avatar
+													alt="N A"
+													src={item.img3}
+													sx={{ width: 320, height: 150, borderRadius: "5px", marginRight: "32px" }}
+												/>
+											</ListItemAvatar>
+										</Carousel>
+
 										<IconButton
 											edge="end"
 											aria-label="delete"
