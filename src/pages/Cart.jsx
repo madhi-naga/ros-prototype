@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   AppBar,
   Typography,
@@ -11,20 +11,44 @@ import {
 } from '@mui/material';
 import Button from '@mui/material/Button';
 import CartItem from '../components/CartItem';
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
 import ArrowBackIcon from '@mui/icons-material/ArrowBackRounded';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import './cart.css';
 
-const Cart = ({ cartItems, setCartItems }) => {
-  const navigate = useNavigate();
-  const { state } = useLocation();
+const formatter = new Intl.NumberFormat("en-US", {
+	style: "currency",
+	currency: "CAD",
 
-  console.log(cartItems);
+	// These options are needed to round to whole numbers if that's what you want.
+	//minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+	//maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+});
+
+const Cart = ({ cartItems, setCartItems }) => {
+
   const itemNames = () => cartItems ? Object.keys(cartItems) : [];
-  console.log(itemNames());
+  
+  const sumDue = () => {
+    let prices = [];
+    prices = itemNames().map((name) => {
+      const currItem = cartItems[name];
+      //sumPrice += currItem.quantity * currItem.price;
+      return currItem.quantity * currItem.price;
+    });
+    return prices.reduce((a, b) => a + b, 0);
+  }
+
+  const navigate = useNavigate();
+  //const [totalDue, setTotalDue] = useState(0);
+  let totalDue = 0;
+  const setTotalDue = (val) => (totalDue = val);
+
+  useEffect(() => {
+    const sumVal = sumDue();
+    console.log(sumVal);
+    setTotalDue(sumVal);
+  });
 
   return (
     <div>
@@ -82,6 +106,7 @@ const Cart = ({ cartItems, setCartItems }) => {
       <Container sx={{ padding: '20px' }}>
         <div className="payment">
           <h3>Amount Due:</h3>
+          <h5>{formatter.format(totalDue)}</h5>
           <Button
             onClick={() => {
               this.handleClick();
@@ -96,30 +121,11 @@ const Cart = ({ cartItems, setCartItems }) => {
   );
 };
 
-// export class Cart extends Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       cartItems: this.props.location,
-//     };
-//   }
-
-//   handleClick(){
-//     console.log("Cart:", this.state.cartItems);
-//     console.log("Cart2:", this.props.location.state);
-//   }
-
-//   render() {
-
-//   }
-// }
-
 const containerStyle = {
   backgroundColor: '#FAFAFA',
   marginTop: '20px',
   paddingTop: '20px',
   borderRadius: '10px',
-  borderStyle: 'grooved',
   borderStyle: 'solid',
 };
 
