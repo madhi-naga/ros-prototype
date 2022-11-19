@@ -63,15 +63,16 @@ ul li::before {
   padding: 0.5rem 0 0.5rem 0.5rem;
   margin: 0.25rem 0;
   /* background-color: #eee; */
-  background-color: #eee;
+}
+.overall h4 {
+  padding-top: 0.25em;
 }
 
 .item {
   display:flex;
   justify-content: center;
   align-items: center;
-  padding: 0.5rem 0 0.5rem 0.5rem;
-  margin: 0.25rem 0;
+  
   /* background-color: #eee; */
   background-color: #eee;
   
