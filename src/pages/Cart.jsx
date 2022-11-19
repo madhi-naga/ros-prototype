@@ -26,29 +26,26 @@ const formatter = new Intl.NumberFormat("en-US", {
 });
 
 const Cart = ({ cartItems, setCartItems }) => {
-
-  const itemNames = () => cartItems ? Object.keys(cartItems) : [];
   
+  const itemNames = () => cartItems ? Object.keys(cartItems) : [];
+  const [quantities, setQuantities] = useState([]);
+
   const sumDue = () => {
     let prices = [];
     prices = itemNames().map((name) => {
       const currItem = cartItems[name];
-      //sumPrice += currItem.quantity * currItem.price;
       return currItem.quantity * currItem.price;
     });
     return prices.reduce((a, b) => a + b, 0);
   }
 
   const navigate = useNavigate();
-  //const [totalDue, setTotalDue] = useState(0);
-  let totalDue = 0;
-  const setTotalDue = (val) => (totalDue = val);
+  const [totalDue, setTotalDue] = useState(0);
 
   useEffect(() => {
     const sumVal = sumDue();
-    console.log(sumVal);
     setTotalDue(sumVal);
-  });
+  }, [cartItems, quantities]);
 
   return (
     <div>
@@ -85,7 +82,7 @@ const Cart = ({ cartItems, setCartItems }) => {
           <h3>Cart Summary:</h3>
           <div className="container" style={containerStyle}>
             {itemNames().map((name) => (
-              <CartItem cartItems={cartItems} setCartItems={setCartItems} itemName={name} item={cartItems[name]} />
+              <CartItem cartItems={cartItems} setCartItems={setCartItems} itemName={name} item={cartItems[name]} quantities={quantities} setQuantities={setQuantities} />
             ))}
           </div>
         </Container>

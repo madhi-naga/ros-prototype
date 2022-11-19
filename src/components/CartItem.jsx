@@ -16,18 +16,20 @@ const formatter = new Intl.NumberFormat('en-US', {
   //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
 });
 
-const CartItem = ({ cartItems, setCartItems, itemName, item }) => {
+const CartItem = ({ cartItems, setCartItems, itemName, item, quantities, setQuantities}) => {
   const [quantity, setQuantity] = useState(item.quantity);
   const [price, setPrice] = useState(item.quantity * item.price);
 
   const onIncrease = () => {
     setQuantity(quantity + 1);
     setPrice(price + item.price);
+    setQuantities(itemQuantities());
   };
   const onDecrease = () => {
     if (quantity > 1) {
       setQuantity(quantity - 1);
       setPrice(price - item.price);
+      setQuantities(itemQuantities());
     }
   };
 
@@ -37,12 +39,17 @@ const CartItem = ({ cartItems, setCartItems, itemName, item }) => {
     setCartItems(newCartItems);
   };
 
+  const itemNames = () => cartItems ? Object.keys(cartItems) : [];
+  const itemQuantities = () => (
+    itemNames().map((name) => (cartItems[name].quantity))
+  );
+
   useEffect(() => {
     item.quantity = quantity;
     cartItems[itemName] = item;
     setCartItems(cartItems);
-    console.log(cartItems);
-  });
+    console.log("useeffect item", cartItems);
+  }, [quantity]);
 
   return (
     <div className="cart-block">
