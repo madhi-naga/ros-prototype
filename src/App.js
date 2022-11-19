@@ -13,8 +13,8 @@ function App() {
         <Routes>
           <Route exact path='/' element={<Home/>} />
           <Route path='/Menu' element={<Menu cartItems={cartItems} setCartItems={setCartItems} />}/>
-          <Route path='/Cart' element={<Cart/>} />
-          <Route path='/Feedback' element={<Feedback/>} />
+          <Route path='/Cart' element={<Cart cartItems={cartItems} setCartItems={setCartItems}/>} />
+          <Route path='/Feedback' element={<Feedback cartItems={cartItems} setCartItems={setCartItems}/>} />
         </Routes>
       </Router>
   );
