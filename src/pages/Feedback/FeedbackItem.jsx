@@ -50,7 +50,7 @@ const FeedbackItem = ({ cartItems, setCartItems, itemName, item, quantities, set
             <Star/>
           </div>
           <div className="col-md-2">
-          <h6>subtotal:</h6> {formatter.format(price)}
+          <h6>Subtotal:</h6> {formatter.format(price)}
           </div>
         </div>
         <hr class="rounded" />

@@ -77,18 +77,8 @@ const Feedback = ({ cartItems, setCartItems }) => {
   return (
     <div>
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
+        <AppBar position="static" sx={{ backgroundColor: '#193161'}}>
           <Toolbar>
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2 }}
-              onClick={handleCart}
-            >
-              <ArrowBackIcon />
-            </IconButton>
             <Typography
               variant="h4"
               component="div"
@@ -96,7 +86,7 @@ const Feedback = ({ cartItems, setCartItems }) => {
                 flexGrow: 1,
                 textAlign: 'center',
                 padding: '5px',
-                fontWeight: 600,
+                fontWeight: 600
               }}
             >
               Feedback
@@ -155,7 +145,7 @@ const Feedback = ({ cartItems, setCartItems }) => {
             }}
             variant="contained"
           >
-            Submit & Pay Now
+            Submit Feedback
           </Button>
           <Button
             onClick={handleHome}
@@ -180,7 +170,7 @@ const Feedback = ({ cartItems, setCartItems }) => {
           </DialogContentText>
           <br />
           <DialogActions>
-            <Button onClick={handleHome} autoFocus>
+            <Button onClick={handleHome} variant="contained" autoFocus sx={{ backgroundColor: '#193161'}}>
               Close
             </Button>
           </DialogActions>

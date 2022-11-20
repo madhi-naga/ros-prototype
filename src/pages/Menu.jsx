@@ -113,7 +113,7 @@ const Menu = ({ cartItems, setCartItems }) => {
 	return (
 		<div>
 			<Box sx={{ flexGrow: 1 }}>
-				<AppBar position="static">
+				<AppBar position="static" sx={{ backgroundColor: '#193161'}}>
 					<Toolbar>
 						<SearchBar
 							className="searchbar"

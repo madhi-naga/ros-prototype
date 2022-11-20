@@ -79,8 +79,8 @@ const CartItem = ({ cartItems, setCartItems, itemName, item, quantities, setQuan
               <RemoveIcon />
             </IconButton>
           </div>
-          <div className="col-md-3">
-            <h6>Due:</h6> {formatter.format(price)}
+          <div className="col-md-3"> 
+          <h6>Subtotal:</h6> {formatter.format(price)}
           </div>
           <div className="col-md-1">
             <IconButton

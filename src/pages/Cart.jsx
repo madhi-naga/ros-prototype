@@ -72,7 +72,7 @@ const Cart = ({ cartItems, setCartItems }) => {
   return (
     <div>
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
+        <AppBar position="static" sx={{ backgroundColor: '#193161'}}>
           <Toolbar>
             <IconButton
               size="large"
@@ -135,7 +135,7 @@ const Cart = ({ cartItems, setCartItems }) => {
             onClick={handleClickOpen}
             style={{
               backgroundColor: '#148531',
-              marginRight:'20px'
+              marginRight: '20px',
             }}
             variant="contained"
           >
@@ -164,7 +164,11 @@ const Cart = ({ cartItems, setCartItems }) => {
             Done your meal? Please rate how we did today!
           </DialogContentText>
           <DialogActions>
-            <Button onClick={handleFeedback} autoFocus>
+            <Button
+              onClick={handleFeedback}
+              variant="contained"
+              sx={{ backgroundColor: '#193161'}}
+            >
               Proceed to Feedback
             </Button>
           </DialogActions>
