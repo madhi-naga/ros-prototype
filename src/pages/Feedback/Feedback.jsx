@@ -145,7 +145,7 @@ const Feedback = ({ cartItems, setCartItems }) => {
             }}
             variant="contained"
           >
-            Submit Feedback
+            Submit
           </Button>
           <Button
             onClick={handleHome}
@@ -154,7 +154,7 @@ const Feedback = ({ cartItems, setCartItems }) => {
             }}
             variant="contained"
           >
-            Cancel
+            Skip
           </Button>
         </div>
       </Container>
