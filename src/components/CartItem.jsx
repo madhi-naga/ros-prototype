@@ -66,6 +66,7 @@ const CartItem = ({ cartItems, setCartItems, itemName, item, quantities, setQuan
               onClick={onIncrease}
               color="primary"
               aria-label="add quantity"
+              sx={{ color: 'green' }}
             >
               <AddIcon on />
             </IconButton>
@@ -75,6 +76,7 @@ const CartItem = ({ cartItems, setCartItems, itemName, item, quantities, setQuan
               onClick={onDecrease}
               color="primary"
               aria-label="reduce quantity"
+              sx={{ color: 'red' }}
             >
               <RemoveIcon />
             </IconButton>
@@ -87,6 +89,7 @@ const CartItem = ({ cartItems, setCartItems, itemName, item, quantities, setQuan
               onClick={removeItem}
               color="primary"
               aria-label="add quantity"
+              sx={{ color: '#D40734' }}
             >
               <CancelIcon />
             </IconButton>

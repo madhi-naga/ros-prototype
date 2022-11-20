@@ -8,6 +8,8 @@ import {
   Box,
   Toolbar,
   TextField,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
@@ -52,13 +54,22 @@ const Cart = ({ cartItems, setCartItems }) => {
   }, [cartItems, quantities]);
 
   const [open, setOpen] = React.useState(false);
+  const [open2, setOpen2] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
-  const handleClose = () => {
+  const handleClose = (event, reason) => {
+    if (reason && reason === 'backdropClick') return;
     setOpen(false);
+    setOpen2(true);
+  };
+
+  const handleClose2 = (event, reason) => {
+    if (reason && reason === 'backdropClick') return;
+    setOpen(false);
+    setOpen2(false);
   };
 
   const handleFeedback = () => {
@@ -69,10 +80,18 @@ const Cart = ({ cartItems, setCartItems }) => {
     navigate('/Menu');
   };
 
+  const [showToast, setShowToast] = useState(false);
+  const handleAssistance = () => {
+    setShowToast(true);
+  };
+  const handleAlertClose = () => {
+    setShowToast(false);
+  };
+
   return (
     <div>
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static" sx={{ backgroundColor: '#193161'}}>
+        <AppBar position="static" sx={{ backgroundColor: '#193161' }}>
           <Toolbar>
             <IconButton
               size="large"
@@ -153,27 +172,88 @@ const Cart = ({ cartItems, setCartItems }) => {
         </div>
       </Container>
       <Dialog onClose={handleClose} open={open}>
-        <DialogTitle>Please Wait for Assistance</DialogTitle>
+        <DialogTitle>Complete your Payment</DialogTitle>
+
+        <DialogContent>
+          <div className="tap-to-pay">
+            <img
+              style={{ width: '120px', padding: '10px' }}
+              src="https://styles.redditmedia.com/t5_38ens/styles/communityIcon_84ih8y9d2uz81.png"
+              alt=""
+            />
+            <img
+              style={{ width: '120px', padding: '10px' }}
+              src="https://upload.wikimedia.org/wikipedia/en/thumb/8/83/Universal_Contactless_Card_Symbol.svg/1200px-Universal_Contactless_Card_Symbol.svg.png"
+              alt=""
+            />
+            <img
+              style={{ width: '130px', padding: '10px' }}
+              src="https://developer.apple.com/news/images/og/apple-pay-og.jpg"
+              alt=""
+            />
+                        <h3>Tap to Pay</h3>
+            <h4>{formatter.format(totalDue)}</h4>
+            <br />
+            <DialogContentText id="alert-dialog-description">
+              Paying in cash or need help?
+            </DialogContentText>
+          </div>
+          <DialogActions>
+            <Button
+              onClick={handleAssistance}
+              variant="contained"
+              sx={{ backgroundColor: '#193161' }}
+            >
+              Request Assistance
+            </Button>
+            <Button
+              onClick={handleClose}
+              variant="contained"
+              sx={{ backgroundColor: '#193161' }}
+            >
+              Submit Order
+            </Button>
+          </DialogActions>
+        </DialogContent>
+      </Dialog>
+      <Dialog onClose={handleClose} open={open2}>
+        <DialogTitle>Order Submitted</DialogTitle>
+
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Your order has been submitted! A server will meet you shortly to
-            complete your payment.
+            The chefs are now preparing your dishes!
           </DialogContentText>
           <br />
           <DialogContentText id="alert-dialog-description">
             Done your meal? Please rate how we did today!
           </DialogContentText>
+          <br />
           <DialogActions>
             <Button
               onClick={handleFeedback}
               variant="contained"
-              sx={{ backgroundColor: '#193161'}}
+              sx={{ backgroundColor: '#193161' }}
             >
               Proceed to Feedback
             </Button>
           </DialogActions>
         </DialogContent>
       </Dialog>
+      <Snackbar
+        open={showToast}
+        onClose={handleAlertClose}
+        message="Item Added Successfully"
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        sx={{ width: 400 }}
+      >
+        <Alert
+          onClose={handleAlertClose}
+          severity="info"
+          sx={{ width: '100%' }}
+        >
+          Requested assistance. A server will help you shortly
+        </Alert>
+      </Snackbar>
     </div>
   );
 };
